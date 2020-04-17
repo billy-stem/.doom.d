@@ -35,6 +35,8 @@
 (after! org
   (setq
    header-line-format " "
+
+   ;; enable word wrap by default
    visual-line-mode t
    org-journal-file-format "%Y-%m-%d.org"
    org-journal-date-prefix "#+TITLE: "
@@ -42,7 +44,7 @@
    org-journal-time-prefix "* "
    org-journal-time-format ""))
 
- ;; writeroom customizations
+;; writeroom customizations
 (setq
  +zen-text-scale 0
  +zen-mixed-pitch-modes '()
