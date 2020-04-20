@@ -7,7 +7,17 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Billy Jarnagin"
-      user-mail-address "billy@thedora.org")
+      user-mail-address "billy@thedora.org"
+
+      ;; This determines the style of line numbers in effect. If set to `nil', line
+      ;; numbers are disabled. For relative line numbers, set this to `relative'.
+      display-line-numbers-type nil
+
+      ;; Disable autocompletion by default
+      company-idle-delay nil
+
+      ;; Enable typographic formatting
+      typo-global-mode t)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -19,9 +29,9 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Source Code Pro" :size 14))
+(setq doom-font (font-spec :family "Menlo" :size 14))
 ;; Set it to the same as the regular font so writeroom-mode will behave
-(setq doom-variable-pitch-font (font-spec :family "EtBembo" :size 14))
+(setq doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 14))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -30,32 +40,38 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Dropbox/org/")
-(setq deft-directory org-directory)
+(setq org-directory "~/Dropbox/org/"
+      org-archive-location (concat org-directory "archive/%s::")
+      deft-directory org-directory
+      deft-recursive t
+
+      org-journal-file-format "%Y-%m-%d.org"
+      org-journal-date-prefix "#+TITLE: "
+      org-journal-date-format "%A, %B %d, %Y"
+      org-journal-time-prefix "* "
+      org-journal-time-format ""
+
+      ;; writeroom customizations
+      +zen-text-scale 0
+      +zen-mixed-pitch-modes '()
+      writeroom-header-line " "
+      writeroom-extra-line-spacing 0.6
+      writeroom-width 64)
 
 (after! org
-  (setq
-   header-line-format " "
+  (setq header-line-format " "
+        visual-line-mode t
+        typo-global-mode t))
 
-   ;; enable word wrap by default
-   visual-line-mode t
-   org-journal-file-format "%Y-%m-%d.org"
-   org-journal-date-prefix "#+TITLE: "
-   org-journal-date-format "%A, %B %d %Y"
-   org-journal-time-prefix "* "
-   org-journal-time-format ""))
+(after! geiser
+  (setq geiser-racket-binary (executable-find "racket")))
 
-;; writeroom customizations
-(setq
- +zen-text-scale 0
- +zen-mixed-pitch-modes '()
- writeroom-header-line " "
- writeroom-extra-line-spacing 0.6
- writeroom-width 64)
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type nil)
+(use-package! racket-mode
+  :mode "\\.rkt$"
+  :config
+  (company-mode)
+  (flycheck-mode)
+  (rainbow-delimiters-mode))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
