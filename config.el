@@ -42,6 +42,7 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/org/"
       org-archive-location (concat org-directory "archive/%s::")
+      org-agenda-files (list org-directory)
       deft-directory org-directory
       deft-recursive t
 
@@ -61,17 +62,13 @@
 (after! org
   (setq header-line-format " "
         visual-line-mode t
-        typo-global-mode t))
+        typo-global-mode t
+        org-hide-emphasis-markers t
+        org-hierarchical-todo-statistics nil))
 
-(after! geiser
-  (setq geiser-racket-binary (executable-find "racket")))
-
-(use-package! racket-mode
-  :mode "\\.rkt$"
-  :config
-  (company-mode)
-  (flycheck-mode)
-  (rainbow-delimiters-mode))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (setq hl-line-mode nil)))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -89,3 +86,32 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+;;
+;; (setq-default org-adapt-indentation t)
+;; (setq-default org-indent-indentation-per-level 2)
+
+(setq-default prettify-symbols-alist '(
+                                       ("#+TITLE:". "⚫")
+                                       (":PROPERTIES:" . "❯")
+                                       ("#+BEGIN_SRC" . "λ")
+                                       ("#+END_SRC" . "λ")
+                                       ("#+begin_src" . "λ")
+                                       ("#+end_src" . "λ")
+                                       ("#+RESULTS:" . "⟫")
+                                       (":END:" . "❮")
+                                       (":RESULTS:" . "❯")
+                                       ("#+name:" . "")
+                                       ("#+BEGIN_EXAMPLE" . "~")
+                                       ("#+begin_example"  . "~")
+                                       ("#+END_EXAMPLE" . "~")
+                                       ("#+end_example" . "~")
+                                       ("#+BEGIN_VERBATIM" . "")
+                                       ("#+END_VERBATIM" . "")
+                                       ("#+BEGIN_VERSE" . "")
+                                       ("#+END_VERSE" . "")
+                                       ("#+BEGIN_QUOTE" . "~")
+                                       ("#+END_QUOTE" . "~")
+                                       ("#+begin_quote" . "~")
+                                       ("#+end_quote" . "~")
+                                       ("#+TBLFM:" . "∫")))
+(add-hook 'org-mode-hook 'prettify-symbols-mode)
